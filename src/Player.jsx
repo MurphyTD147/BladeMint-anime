@@ -7,28 +7,35 @@ function Player({ anime }) {
     setCurrentStep(0);
   }, [anime]);
 
-  // Защита на случай, если episodes еще не определен или пуст
   if (!anime || !anime.episodes || anime.episodes.length === 0) {
     return (
-      <div className="p-10 border border-dashed border-white/10 text-center text-knight-steel uppercase text-[10px] tracking-widest">
-        Данные серий загружаются или отсутствуют
+      <div className="p-10 border border-dashed border-white/5 text-center text-knight-steel uppercase text-[9px] tracking-[0.2em]">
+        Waiting for data transmission...
       </div>
     );
   }
 
+  // Расчет прогресса для полоски
+  const progress = ((currentStep + 1) / anime.episodes.length) * 100;
+
   return (
-    <section className="mb-12">
-      {/* Плеер */}
-      <div className="bg-mint-gray rounded-sm overflow-hidden border border-white/10 shadow-2xl">
-        <div className="px-4 py-2 bg-white/5 border-b border-white/5 flex justify-between items-center">
-          <span className="text-[9px] uppercase font-bold text-knight-steel tracking-widest">
-            BladeMint Engine
-          </span>
-          <span className="text-[10px] font-black text-mint-accent">
-            СЕРИЯ {currentStep + 1} ИЗ {anime.episodes.length}
+    <section className="mb-12 max-w-5xl mx-auto">
+      {/* Контейнер плеера */}
+      <div className="relative group bg-[#0d0d0d] rounded-lg overflow-hidden border border-white/10 shadow-2xl">
+        {/* Верхняя панель */}
+        <div className="px-5 py-3 bg-white/[0.02] border-b border-white/5 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-1 rounded-full bg-mint-accent animate-pulse"></div>
+            <span className="text-[9px] uppercase font-medium text-knight-steel tracking-[0.2em]">
+              BladeMint System
+            </span>
+          </div>
+          <span className="text-[10px] font-normal text-white/40 tracking-wider">
+            EPISODE <span className="text-mint-accent">{currentStep + 1}</span> / {anime.episodes.length}
           </span>
         </div>
         
+        {/* Видео */}
         <div className="aspect-video w-full bg-black">
           <iframe 
             key={`${anime.id}-${currentStep}`}
@@ -38,45 +45,63 @@ function Player({ anime }) {
             height="100%" 
             frameBorder="0" 
             allowFullScreen
+            className="opacity-90 group-hover:opacity-100 transition-opacity duration-700"
           ></iframe>
+        </div>
+
+        {/* Тонкий индикатор прогресса под видео */}
+        <div className="h-[2px] w-full bg-white/5">
+          <div 
+            className="h-full bg-mint-accent transition-all duration-500 ease-out shadow-[0_0_10px_#00ffaa]"
+            style={{ width: `${progress}%` }}
+          ></div>
         </div>
       </div>
       
       {/* Сетка выбора серий */}
-      <div className="mt-6">
-        <h3 className="text-[10px] uppercase font-black text-white/30 mb-3 tracking-tighter">Выберите серию:</h3>
-        <div className="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 gap-2">
+      <div className="mt-8">
+        <div className="flex items-center gap-4 mb-4">
+          <h3 className="text-[9px] uppercase font-medium text-white/20 tracking-[0.15em] whitespace-nowrap">
+            Select Episode
+          </h3>
+          <div className="h-[1px] w-full bg-white/5"></div>
+        </div>
+
+        <div className="grid grid-cols-6 sm:grid-cols-10 md:grid-cols-12 gap-2">
           {anime.episodes.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentStep(index)}
-              className={`py-2 text-[11px] font-bold transition-all border ${
+              className={`h-10 text-[11px] font-normal transition-all duration-300 rounded-md border ${
                 currentStep === index 
-                ? 'bg-mint-accent border-mint-accent text-mint-gray shadow-[0_0_15px_rgba(0,255,170,0.3)]' 
-                : 'border-white/10 text-white/60 hover:border-white/40 hover:text-white'
+                ? 'bg-mint-accent/10 border-mint-accent/50 text-mint-accent shadow-[0_0_20px_rgba(0,255,170,0.1)]' 
+                : 'border-white/[0.05] text-white/30 hover:border-white/20 hover:text-white/80'
               }`}
             >
-              {index + 1}
+              {index + 1 < 10 ? `0${index + 1}` : index + 1}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Кнопки Назад/Вперед (оставил для удобства) */}
-      <div className="mt-6 flex justify-between items-center border-t border-white/5 pt-4">
+      {/* Навигация "Next/Prev" — теперь более аккуратная */}
+      <div className="mt-8 flex justify-center gap-12">
         <button 
           onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
           disabled={currentStep === 0}
-          className="text-[9px] uppercase font-bold text-knight-steel hover:text-white disabled:opacity-0 transition-all"
+          className="group flex flex-col items-center gap-1 disabled:opacity-0 transition-all"
         >
-          ← Предыдущая
+          <span className="text-[18px] text-knight-steel group-hover:text-mint-accent transition-colors">←</span>
+          <span className="text-[8px] uppercase tracking-widest text-knight-steel font-medium">Prev</span>
         </button>
+
         <button 
           onClick={() => setCurrentStep(prev => Math.min(anime.episodes.length - 1, prev + 1))}
           disabled={currentStep === anime.episodes.length - 1}
-          className="text-[9px] uppercase font-bold text-knight-steel hover:text-white disabled:opacity-0 transition-all"
+          className="group flex flex-col items-center gap-1 disabled:opacity-0 transition-all"
         >
-          Следующая →
+          <span className="text-[18px] text-knight-steel group-hover:text-mint-accent transition-colors">→</span>
+          <span className="text-[8px] uppercase tracking-widest text-knight-steel font-medium">Next</span>
         </button>
       </div>
     </section>
