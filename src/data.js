@@ -11,7 +11,7 @@ export const animeList = [
     info: "Экшен / Приключения", 
     img: jojo_part1Img, 
     series: 9, 
-    videoUrl: "https://aniqit.com/serial/315/34cc8167f08e79430c51121d55655383/720p", 
+    videoUrl: "https://adshost.cc/serial/315/34cc8167f08e79430c51121d55655383/720p", 
     desc: "История о чести, предательстве и невероятных сражениях! Начало эпической саги Джостаров." 
   },
   { 
@@ -20,7 +20,7 @@ export const animeList = [
     info: "Экшен / Приключения", 
     img: jojo_part2Img, 
     series: 17, 
-    videoUrl: "https://aniqit.com/serial/316/090400032906e0696f8c7e443831777d/720p", 
+    videoUrl: "https://adshost.cc/serial/316/090400032906e0696f8c7e443831777d/720p", 
     desc: "Нью-Йорк, 1938 год. Джозеф Джостар вступает в битву против древних Людей из Колонн." 
   },
   { 
@@ -29,7 +29,7 @@ export const animeList = [
     info: "Экшен / Приключения", 
     img: jojo_part3Img, 
     series: 48, 
-    videoUrl: "https://aniqit.com/serial/1429/b66e3b88566f12e16d944a9590861614/720p", 
+    videoUrl: "https://adshost.cc/serial/1429/b66e3b88566f12e16d944a9590861614/720p", 
     desc: "Появление Стендов! Куджо Джотаро отправляется в Египет, чтобы покончить с Дио навсегда." 
   },
 ];
