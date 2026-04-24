@@ -72,9 +72,13 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
                 <div className="w-[1px] h-4 bg-white/10"></div>
                 
                 {/* Опыт */}
-                <div className="flex flex-col items-start leading-none min-w-[25px]">
-                  <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter">Exp</span>
-                  <span className="text-[8px] font-mono text-mint-accent">{experience}</span>
+                <div className="flex flex-col items-center leading-none min-w-[35px]">
+                  <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter text-center">
+                    Exp
+                  </span>
+                  <span className="text-[8px] font-mono text-mint-accent text-center">
+                    {experience}
+                  </span>
                 </div>
               </div>
             </div>
