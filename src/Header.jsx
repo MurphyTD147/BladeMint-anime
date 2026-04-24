@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { animeList } from './data';
 
-function Header({ experience }) {
+function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
   const [searchActive, setSearchActive] = useState(false);
   
-  // Функция для переключения полноэкранного режима ВСЕЙ страницы
+  // Логика мгновенных результатов для выпадающего окна
+  const searchResults = useMemo(() => {
+    if (!searchQuery?.trim()) return [];
+    return animeList.filter(anime => 
+      anime.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      anime.originalTitle?.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 5); // Показываем топ-5 совпадений
+  }, [searchQuery]);
+
+  // Функция для переключения полноэкранного режима
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch((err) => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+        console.error(`Error: ${err.message}`);
       });
     } else {
       if (document.exitFullscreen) {
@@ -20,7 +30,7 @@ function Header({ experience }) {
   const progress = Math.min((experience / nextLevelXP) * 100, 100);
 
   return (
-    <header className="max-w-7xl mx-auto py-4 md:py-6 px-4 md:px-6 relative text-white">
+    <header className="max-w-7xl mx-auto py-4 md:py-6 px-4 md:px-6 relative text-white z-50">
       <div className="flex justify-between items-center gap-4">
         
         {/* 1. ЛОГОТИП */}
@@ -31,14 +41,17 @@ function Header({ experience }) {
           </div>
         </div>
 
-        {/* 2. ПОИСК */}
+        {/* 2. ПОИСК + ВЫПАДАЮЩИЙ СПИСОК */}
         <div className={`flex-grow max-w-md transition-all duration-500 relative ${searchActive ? 'w-full' : 'w-10 sm:w-64'}`}>
           <div className="relative flex items-center">
             <input 
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="ПОИСК ТАЙТЛА..."
               onFocus={() => setSearchActive(true)}
-              onBlur={() => setSearchActive(false)}
+              // Задержка закрытия, чтобы клик по результату успел обработаться
+              onBlur={() => setTimeout(() => setSearchActive(false), 200)}
               className={`w-full bg-white/[0.03] border border-white/5 rounded-md py-2 pl-10 pr-4 text-[10px] tracking-[0.2em] text-white placeholder:text-knight-steel/50 focus:outline-none focus:border-mint-accent/30 focus:bg-white/[0.05] transition-all ${
                 searchActive ? 'opacity-100' : 'opacity-0 sm:opacity-100 cursor-pointer'
               }`}
@@ -50,20 +63,47 @@ function Header({ experience }) {
               </svg>
             </div>
             {searchActive && (
-              <button onClick={() => setSearchActive(false)} className="absolute right-3 sm:hidden text-knight-steel">✕</button>
+              <button 
+                onClick={() => { setSearchQuery(''); setSearchActive(false); }} 
+                className="absolute right-3 sm:hidden text-knight-steel"
+              >✕</button>
             )}
           </div>
+
+          {/* ВЫПАДАЮЩЕЕ ОКНО РЕЗУЛЬТАТОВ */}
+          {searchActive && searchResults.length > 0 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-[#0d0d0d]/95 backdrop-blur-xl border border-white/10 rounded-md overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[60]">
+              {searchResults.map((anime) => (
+                <div 
+                  key={anime.id}
+                  onClick={() => {
+                    onSelectAnime(anime);
+                    setSearchQuery('');
+                  }}
+                  className="flex items-center gap-3 p-2 hover:bg-mint-accent/10 cursor-pointer border-b border-white/5 last:border-none transition-colors group"
+                >
+                  <img src={anime.img} alt="" className="w-8 h-11 object-cover rounded-sm border border-white/10" />
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="text-[9px] font-bold uppercase tracking-wider group-hover:text-mint-accent transition-colors truncate">
+                      {anime.title}
+                    </span>
+                    <span className="text-[7px] text-knight-steel uppercase tracking-tight truncate opacity-60">
+                      {anime.originalTitle}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-                {/* 3. НАВИГАЦИЯ, ФУЛЛСКРИН И СТАТЫ */}
+        {/* 3. НАВИГАЦИЯ, ФУЛЛСКРИН И СТАТЫ */}
         <div className={`flex items-center gap-3 md:gap-5 ${searchActive ? 'hidden md:flex' : 'flex'}`}>
-          
           <nav className="hidden lg:flex gap-6 text-[9px] uppercase tracking-[0.2em] font-medium text-knight-steel mr-2">
             <a href="#" className="hover:text-white transition-colors">Библиотека</a>
             <a href="#" className="hover:text-white transition-colors">Рыцари</a>
           </nav>
 
-          {/* КНОПКА ФУЛЛСКРИНА — теперь она левее опыта */}
           <button 
             onClick={toggleFullScreen}
             className="w-8 h-8 md:w-9 md:h-9 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel hover:text-mint-accent hover:border-mint-accent/30 transition-all ml-2"
@@ -74,27 +114,20 @@ function Header({ experience }) {
             </svg>
           </button>
 
-          {/* ГРУППА ПРОФИЛЯ: Опыт + Аватарка */}
           <div className="flex items-center gap-3">
-            {/* XP Панель */}
             <div className="relative group cursor-help">
               <div className="flex items-center gap-2 md:gap-3 bg-white/[0.02] border border-white/5 px-4 py-1.5 rounded-md overflow-hidden relative">
-                
-                {/* ФОНОВАЯ ПОЛОСКА ПРОГРЕССА (внутри рамки) */}
                 <div 
                   className="absolute bottom-0 left-0 h-[2px] bg-mint-accent shadow-[0_0_8px_#00ffaa] transition-all duration-1000 opacity-60"
                   style={{ width: `${progress}%` }}
                 ></div>
-
                 <div className="flex flex-col items-end leading-none relative z-10">
                   <span className="text-[7px] uppercase text-knight-steel mb-1">Rank</span>
                   <span className="text-[9px] md:text-[10px] uppercase font-bold text-white whitespace-nowrap">
                     {experience < 50 ? "Странник" : experience < 300 ? "Рыцарь" : "Мастер"}
                   </span>
                 </div>
-                
                 <div className="w-[1px] h-5 bg-white/10 relative z-10"></div>
-                
                 <div className="flex flex-col items-start leading-none relative z-10">
                   <span className="text-[7px] uppercase text-knight-steel mb-1">Exp</span>
                   <span className="text-[9px] md:text-[10px] font-mono text-mint-accent">{experience}</span>
@@ -102,7 +135,6 @@ function Header({ experience }) {
               </div>
             </div>
 
-            {/* Иконка профиля */}
             <button className="w-8 h-8 md:w-9 md:h-9 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel hover:text-mint-accent hover:border-mint-accent/30 transition-all">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -111,9 +143,7 @@ function Header({ experience }) {
             </button>
           </div>
         </div>
-
       </div>
-
       <div className="absolute bottom-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent"></div>
     </header>
   );

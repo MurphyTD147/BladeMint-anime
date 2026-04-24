@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AnimeCard({ anime, onSelect }) {
+function AnimeCard({ anime, onSelect, isFavorite, onToggleFavorite }) {
   const episodeCount = anime.episodes ? anime.episodes.length : 0;
 
   return (
@@ -15,7 +15,25 @@ function AnimeCard({ anime, onSelect }) {
           alt={anime.title} 
           className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out"
         />
+
+        {/* Кнопка Избранного (Ромб) */}
+        <button 
+          onClick={(e) => {
+            e.stopPropagation(); // Чтобы при клике на ромб не открывалось аниме
+            onToggleFavorite(anime.id);
+          }}
+          className={`absolute top-3 right-3 z-10 p-1.5 rounded-md backdrop-blur-md transition-all duration-300 border
+            ${isFavorite 
+              ? 'bg-mint-accent/10 border-mint-accent/50 text-mint-accent opacity-100' 
+              : 'bg-black/40 border-white/10 text-white opacity-0 group-hover:opacity-100 hover:border-white/40'
+            }`}
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+            <path d="M12 2L19 9L12 16L5 9L12 2Z" />
+          </svg>
+        </button>
         
+        {/* Индикатор эпизодов */}
         <div className="absolute top-3 left-3 flex items-center">
           <div className="backdrop-blur-md bg-black/40 border border-white/10 px-2 py-1 rounded-md flex items-center gap-2">
             <div className="w-1 h-1 rounded-full bg-mint-accent shadow-[0_0_5px_#00ffaa]"></div>
@@ -38,7 +56,6 @@ function AnimeCard({ anime, onSelect }) {
         
         <div className="flex items-center gap-2 mt-2">
           <span className="text-[8px] md:text-[9px] text-knight-steel uppercase tracking-[0.2em] font-light">
-            {/* ТУТ ИЗМЕНЕНИЕ: красиво склеиваем массив жанров */}
             {Array.isArray(anime.info) ? anime.info.join(' / ') : anime.info}
           </span>
           <div className="h-[1px] flex-grow bg-white/5"></div>
