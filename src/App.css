@@ -182,3 +182,13 @@
     border-right-color: var(--border);
   }
 }
+
+/* Скрывает полосу прокрутки, но оставляет возможность скроллить пальцем/мышкой */
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* для Chrome, Safari и Opera */
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* для Internet Explorer и Edge */
+  scrollbar-width: none;  /* для Firefox */
+}
