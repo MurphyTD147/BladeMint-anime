@@ -62,7 +62,7 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
               ></div>
               <div className="flex items-center gap-2 relative z-10">
                 {/* Звание: зафиксировал ширину для мобилки */}
-                <div className="flex flex-col items-center leading-none min-w-[70px]"> 
+                <div className="flex flex-col items-center leading-none min-w-[60px]"> 
                   <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter">Rank</span>
                   <span className="text-[8px] uppercase font-bold text-white whitespace-nowrap text-center">
                     {currentRank}
@@ -72,7 +72,7 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
                 <div className="w-[1px] h-4 bg-white/10"></div>
                 
                 {/* Опыт */}
-                <div className="flex flex-col items-start leading-none min-w-[35px]">
+                <div className="flex flex-col items-start leading-none min-w-[25px]">
                   <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter">Exp</span>
                   <span className="text-[8px] font-mono text-mint-accent">{experience}</span>
                 </div>
