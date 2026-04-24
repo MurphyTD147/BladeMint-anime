@@ -15,7 +15,6 @@ function Player({ anime }) {
     );
   }
 
-  // Расчет прогресса для полоски
   const progress = ((currentStep + 1) / anime.episodes.length) * 100;
 
   return (
@@ -35,8 +34,8 @@ function Player({ anime }) {
           </span>
         </div>
         
-        {/* Видео */}
-        <div className="aspect-video w-full bg-black">
+        {/* Видео контейнер с защитой */}
+        <div className="relative aspect-video w-full bg-black overflow-hidden">
           <iframe 
             key={`${anime.id}-${currentStep}`}
             src={anime.episodes[currentStep]} 
@@ -47,9 +46,22 @@ function Player({ anime }) {
             allowFullScreen
             className="opacity-90 group-hover:opacity-100 transition-opacity duration-700"
           ></iframe>
+
+          {/* ЗАЩИТНЫЙ СЛОЙ (Ghost Shield) 
+            pointer-events-none пропускает обычные клики (пауза/громкость),
+            но блокирует "глубокое" распознавание объекта браузером на мобилках.
+          */}
+          <div 
+            className="absolute inset-0 z-10 pointer-events-none"
+            style={{ 
+              WebkitTouchCallout: 'none', // Отключает вызов меню ссылки на iOS
+              userSelect: 'none' 
+            }}
+            onContextMenu={(e) => e.stopPropagation()} 
+          ></div>
         </div>
 
-        {/* Тонкий индикатор прогресса под видео */}
+        {/* Индикатор прогресса */}
         <div className="h-[2px] w-full bg-white/5">
           <div 
             className="h-full bg-mint-accent transition-all duration-500 ease-out shadow-[0_0_10px_#00ffaa]"
@@ -84,7 +96,7 @@ function Player({ anime }) {
         </div>
       </div>
 
-      {/* Навигация "Next/Prev" — теперь более аккуратная */}
+      {/* Навигация */}
       <div className="mt-8 flex justify-center gap-12">
         <button 
           onClick={() => setCurrentStep(prev => Math.max(0, prev - 1))}
