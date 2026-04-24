@@ -3,7 +3,22 @@ import { animeList } from './data';
 
 function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
   const [searchActive, setSearchActive] = useState(false);
-  
+
+  // --- ЛОГИКА РАНГОВ ---
+  const getRank = (exp) => {
+    if (exp < 50) return "Новичок";
+    if (exp < 150) return "Странник";
+    if (exp < 300) return "Оруженосец";
+    if (exp < 600) return "Рыцарь";
+    if (exp < 1000) return "Всадник";
+    if (exp < 2000) return "Паладин";
+    return "Мастер";
+  };
+
+  const currentRank = getRank(experience);
+  const nextLevelXP = 2000; 
+  const progress = Math.min((experience / nextLevelXP) * 100, 100);
+
   const searchResults = useMemo(() => {
     if (!searchQuery?.trim()) return [];
     return animeList.filter(anime => 
@@ -20,9 +35,6 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
     }
   };
 
-  const nextLevelXP = 500;
-  const progress = Math.min((experience / nextLevelXP) * 100, 100);
-
   return (
     <header className="max-w-7xl mx-auto py-3 md:py-6 px-4 md:px-6 relative text-white z-50">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -36,40 +48,45 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
 
           {/* КОМПЛЕКСНАЯ ПАНЕЛЬ СТАТОВ ДЛЯ МОБИЛКИ */}
           <div className="flex items-center gap-1.5 md:hidden ml-auto">
-            {/* XP Панель */}
+            
+            {/* 1. ФУЛЛСКРИН (Теперь первый) */}
+            <button onClick={toggleFullScreen} className="w-8 h-8 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            </button>
+
+            {/* 2. XP ПАНЕЛЬ (В центре) */}
             <div className="relative bg-white/[0.02] border border-white/5 px-2 py-1 rounded-md overflow-hidden">
               <div 
                 className="absolute bottom-0 left-0 h-[1.5px] bg-mint-accent shadow-[0_0_8px_#00ffaa] transition-all duration-1000 opacity-60" 
                 style={{ width: `${progress}%` }}
               ></div>
               <div className="flex items-center gap-2 relative z-10">
-                <div className="flex flex-col items-end leading-none">
-                  <span className="text-[6px] uppercase text-knight-steel mb-0.5">Rank</span>
-                  <span className="text-[8px] uppercase font-bold text-white whitespace-nowrap">
-                    {experience < 50 ? "Стр." : experience < 300 ? "Рыцарь" : "Мастер"}
+                {/* Звание: зафиксировал ширину для мобилки */}
+                <div className="flex flex-col items-center leading-none min-w-[70px]"> 
+                  <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter">Rank</span>
+                  <span className="text-[8px] uppercase font-bold text-white whitespace-nowrap text-center">
+                    {currentRank}
                   </span>
                 </div>
+                
                 <div className="w-[1px] h-4 bg-white/10"></div>
-                <div className="flex flex-col items-start leading-none">
-                  <span className="text-[6px] uppercase text-knight-steel mb-0.5">Exp</span>
+                
+                {/* Опыт */}
+                <div className="flex flex-col items-start leading-none min-w-[35px]">
+                  <span className="text-[6px] uppercase text-knight-steel mb-0.5 tracking-tighter">Exp</span>
                   <span className="text-[8px] font-mono text-mint-accent">{experience}</span>
                 </div>
               </div>
             </div>
 
-            {/* Фуллскрин */}
-            <button onClick={toggleFullScreen} className="w-8 h-8 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
-            </button>
-
-            {/* Профиль */}
-            <button className="w-8 h-8 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel">
+            {/* 3. ПРОФИЛЬ (В конце) */}
+            <button className="w-8 h-8 rounded-md bg-white/[0.03] border border-white/10 flex items-center justify-center text-knight-steel shrink-0">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </button>
           </div>
         </div>
 
-        {/* СТРОКА ПОИСКА (второй ряд на мобилке) */}
+        {/* СТРОКА ПОИСКА */}
         <div className={`relative w-full md:max-w-md transition-all duration-500 ${searchActive ? 'md:flex-grow' : 'md:w-64'}`}>
           <div className="relative flex items-center">
             <input 
@@ -86,7 +103,6 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
             </div>
           </div>
 
-          {/* ВЫПАДАЮЩИЕ РЕЗУЛЬТАТЫ */}
           {searchActive && searchResults.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-[#0d0d0d]/95 backdrop-blur-xl border border-white/10 rounded-md overflow-hidden shadow-2xl z-[60]">
               {searchResults.map((anime) => (
@@ -106,7 +122,7 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
           )}
         </div>
 
-        {/* НАВИГАЦИЯ И СТАТЫ (ДЛЯ ДЕСКТОПА) */}
+        {/* НАВИГАЦИЯ И СТАТЫ (ДЕСКТОП) */}
         <div className="hidden md:flex items-center gap-5">
           <nav className="flex gap-6 text-[9px] uppercase tracking-[0.2em] font-medium text-knight-steel mr-2">
             <a href="#" className="hover:text-white transition-colors">Библиотека</a>
@@ -123,7 +139,7 @@ function Header({ experience, searchQuery, setSearchQuery, onSelectAnime }) {
               <div className="flex items-center gap-3 relative z-10">
                 <div className="flex flex-col items-end leading-none">
                   <span className="text-[7px] uppercase text-knight-steel mb-1">Rank</span>
-                  <span className="text-[10px] uppercase font-bold text-white">{experience < 50 ? "Странник" : experience < 300 ? "Рыцарь" : "Мастер"}</span>
+                  <span className="text-[10px] uppercase font-bold text-white">{currentRank}</span>
                 </div>
                 <div className="w-[1px] h-5 bg-white/10"></div>
                 <div className="flex flex-col items-start leading-none">
