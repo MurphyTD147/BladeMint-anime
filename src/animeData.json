@@ -5,7 +5,7 @@
     "title": "ДжоДжо: Фантомная кровь",
     "originalTitle": "JoJo no Kimyou na Bouken Part 1: Phantom Blood",
     "series": "JoJo",
-    "info": ["Приключения", "Сверхестественное", "Вампиры", "Суперсила", "Сёнэн"],
+    "info": ["Приключения", "Сверхестественное", "Вампиры", "Городское фэнтези", "Зомби", "Суперсила", "Сёнэн"],
     "img": "/posters/jojo_part1.jpg",
     "episodes": [
       "564495/b33cd532c15f67c35642bc66e8028d77",
@@ -26,7 +26,7 @@
     "title": "ДжоДжо 2: Боевое стремление",
     "originalTitle": "JoJo no Kimyou na Bouken Part 2: Battle Tendency",
     "series": "JoJo",
-    "info": ["Приключения", "Сверхестественное", "Вампиры", "Суперсила", "Сёнэн"],
+    "info": ["Приключения", "Сверхестественное", "Вампиры", "Городское фэнтези", "Суперсила", "Сёнэн"],
     "img": "/posters/jojo_part2.jpg",
     "episodes": [
       "565713/79258c0d4a75fb49d164640e72e551dc", "565714/26f8c61a4326dc9d381822aa53c84341", "565715/c9d80ddfd67a415ef9463b66ec2f2472",
@@ -44,7 +44,7 @@
     "title": "ДжоДжо 3: Рыцари звёздной пыли",
     "originalTitle": "JoJo no Kimyou na Bouken Part 3: Stardust Crusaders",
     "series": "JoJo",
-    "info": ["Приключения", "Сверхестественное", "Суперсила", "Сёнэн"],
+    "info": ["Приключения", "Сверхестественное", "Городское фэнтези", "Суперсила", "Сёнэн"],
     "img": "/posters/jojo_part3_1.jpg",
     "episodes": [
       "680421/45ec828c7e8575dff51241a97a98f656", "684604/d229396ffa660e67db5de1de063971da", "688536/a13a991cdd6edbe424dedbd6f93cc1ee", 
@@ -64,7 +64,7 @@
     "title": "ДжоДжо 3: Рыцари звёздной пыли 2",
     "originalTitle": "JoJo no Kimyou na Bouken Part 3: Stardust Crusaders - Egypt-hen",
     "series": "JoJo",
-    "info": ["Приключения", "Сверхестественное", "Суперсила", "Сёнэн"],
+    "info": ["Приключения", "Сверхестественное", "Городское фэнтези", "Суперсила", "Сёнэн"],
     "img": "/posters/jojo_part3_2.jpg",
     "episodes": [
       "544306/7888933ffe7fbf2449033de018b9c566", "544307/401cfa2cc0fa2182468f611cf07e6613", "544308/659fc3cb44b5cc3880566b2cec851df1",
@@ -84,7 +84,7 @@
     "title": "ДжоДжо 4: Несокрушимый алмаз",
     "originalTitle": "JoJo no Kimyou na Bouken Part 4: Diamond wa Kudakenai",
     "series": "JoJo",
-    "info": ["Приключения", "Сверхестественное", "Суперсила", "Сёнэн"],
+    "info": ["Приключения", "Сверхестественное", "Городское фэнтези", "Суперсила", "Сёнэн"],
     "img": "/posters/jojo_part4.jpg",
     "episodes": [
       "561381/e173625aa534f7ec7555b97c7aa7655d", "561382/2ba516a816b97c5c940f7966e3601f34", "561383/d7cccc9cabe6a75afb7b09054a077135",
@@ -105,7 +105,7 @@
     "title": "Евангелион",
     "originalTitle": "Shinseiki Evangelion",
     "series": "Evangelion",
-    "info": ["Безумие", "Драма", "Меха", "Триллер", "Фантастика"],
+    "info": ["Безумие", "Драма", "Меха", "Триллер", "Фантастика", "Ангелы", "Религия", "Трагедия", "Философия"],
     "img": "/posters/evangelion.jpg",
     "episodes": [
       "157595/1cf89a2da7fc992bf8de2aa3d52f34e1", "157596/302b6d801268c7fdc4df969e43b8fd91", "157597/ad2a13a19101af51e72470b151956696",
@@ -126,7 +126,7 @@
     "title": "Моя геройская академия",
     "originalTitle": "Boku no Hero Academia",
     "series": "Boku no Hero Academia",
-    "info": ["Суперcила", "Школа", "Сёнэн"],
+    "info": ["Суперcила", "Школа", "Городское фэнтези", "Криминал", "Сёнэн"],
     "img": "/posters/my_hero_academia_part1.jpg",
     "episodes": [
       "101650/a14493b84c15efe25567163df1110604", "101651/3dd423c6e142841a40a04c26792571bb", "101652/6d5309fced6f68397a08224bd776a0bb",
